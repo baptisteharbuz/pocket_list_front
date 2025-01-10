@@ -6,6 +6,7 @@ import Login from "../src/PAGES/Login";
 import WelcomePlus from "../src/PAGES/WelcomePlus";
 import MyList from "../src/PAGES/MyList";
 import SharedList from "../src/PAGES/SharedList";
+import UpdateList from "../src/PAGES/UpdateList";
 
 // COMPONENTS
 import Sidebar from "./COMPONENTS/Sidebar";
@@ -33,6 +34,7 @@ function App() {
             <Route path="/" element={<Login />} />
             <Route path="/WelcomePlus" element={<WelcomePlus />} />
             <Route path="/MyList" element={<MyList />} />
+            <Route path="/UpdateList" element={<UpdateList/>} />
             <Route path="/SharedList" element={<SharedList />} />
           </Routes>
         </div>

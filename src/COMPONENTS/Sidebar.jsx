@@ -9,8 +9,9 @@ export default function Sidebar() {
     <div className={styles.ContainerSidebar}>
         <div className={styles.BoxListLink}>
             <li><Link to='/WelcomePLus' className='Link'>Ajouter Une Liste</Link></li>
+            <li><Link to='/UpdateList' className='Link'>Modifier Une Liste</Link></li>
             <li><Link to="/MyList" className='Link'>Mes Listes</Link></li>
-            <li><Link to="/SharedList" className='Link'>Listes Partager</Link></li>
+            <li><Link to="/SharedList" className='Link'>Listes Partagées</Link></li>
         </div>
     </div>
   )

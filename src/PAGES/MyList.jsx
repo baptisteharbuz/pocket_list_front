@@ -1,25 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
-//STYLES
+// STYLES
 import styles from './MyList.module.css';
 
-//ASSETS
+// ASSETS
 import Edit from "../ASSETS/Edit.svg";
 import Share from "../ASSETS/Share.svg";
 import Trash from "../ASSETS/Trash.svg";
 
 export default function MyList() {
-  const userLists = [
-    { id: 1, name: 'Liste des courses', dateCreated: '2025-01-05' },
-    { id: 2, name: 'Projets à terminer', dateCreated: '2025-01-03' },
-    { id: 3, name: 'Vacances d\'été', dateCreated: '2025-01-01' },
-    { id: 4, name: 'Livres à lire', dateCreated: '2025-01-02' },
-    { id: 5, name: 'Films à regarder', dateCreated: '2025-01-04' },
-    { id: 6, name: 'Recettes à tester', dateCreated: '2025-01-06' },
-  ];
-
+  // State pour stocker les listes récupérées
+  const [userLists, setUserLists] = useState([]); 
+  const [currentPage, setCurrentPage] = useState(1); 
+  const [error, setError] = useState('');
   const itemsPerPage = 3; // Nombre de listes par page
-  const [currentPage, setCurrentPage] = useState(1); // Page active
+  
+  // Remplacez ceci par l'ID de l'utilisateur authentifié
+  const userId = 1;
+
+  // Effect pour récupérer les listes de l'utilisateur depuis l'API
+  useEffect(() => {
+    const fetchLists = async () => {
+      try {
+        const userId = 1;  // Remplacez par l'ID réel de l'utilisateur connecté
+        const response = await axios.get(`http://localhost:3000/list/user/${userId}`);
+        setUserLists(response.data.data); // Stocker les résultats dans l'état
+      } catch (error) {
+        console.error('Error fetching lists:', error);
+      }
+    };
+
+    fetchLists();
+  }, [userId]); // Ce useEffect se déclenche quand userId change
 
   // Calculer les listes à afficher pour la page active
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -37,15 +50,19 @@ export default function MyList() {
   return (
     <div className={styles.MyListContainer}>
       <h1>Mes Listes</h1>
+
+      {/* Affichage du message d'erreur s'il y en a une */}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+
       <ul>
         {currentLists.map((list) => (
-          <li key={list.id} className={styles.MyListCard}>
-            <h2>{list.name}</h2>
-            <p>Créée le {list.dateCreated}</p>
+          <li key={list.ID_List} className={styles.MyListCard}>
+            <h2>{list.Name}</h2>
+            <p>Créée le {new Date(list.Creation_Date).toLocaleDateString()}</p>
             <div className={styles.IconContainer}>
-              <img src={Edit} alt='Icone modification' onClick={null} />
-              <img src={Share} alt='Icone de partage' onClick={null} />
-              <img src={Trash} alt='Icone de Poubelle' onClick={null} />
+              <img src={Edit} alt="Icone modification" onClick={null} />
+              <img src={Share} alt="Icone de partage" onClick={null} />
+              <img src={Trash} alt="Icone de Poubelle" onClick={null} />
             </div>
           </li>
         ))}

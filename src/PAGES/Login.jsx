@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 //STYLES
 import styles from "./Login.module.css";
@@ -23,13 +24,20 @@ export default function Login() {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+  
     try {
-      // Logique d'inscription (ex : appel API)
-      console.log('User signed up:', formData);
-      // Si l'inscription réussit
+      const response = await axios.post('http://localhost:3000/user/add', {
+        FirstName: formData.Nom,
+        LastName: formData.Prenom,
+        Email: formData.Email,
+        Password: formData.Mdp,
+        Age: formData.Age,
+      });
+  
+      console.log('User signed up:', response.data);
       navigate(`/WelcomePlus`);
     } catch (error) {
-      console.error('Échec de l’inscription', error);
+      console.error('Erreur lors de l\'inscription', error.response ? error.response.data : error.message);
     }
   };
 
@@ -86,6 +94,14 @@ export default function Login() {
                   pattern="(?=.*\d).{8,}"
                   title="Le mot de passe doit contenir au moins 8 caractères dont au moins un chiffre"
                   placeholder="Mot de passe"
+                />
+                 <input
+                  type="number"
+                  name="Age"
+                  value={formData.Age}
+                  onChange={handleChange}
+                  required
+                  placeholder="Age"
                 />
               </>
             )}
